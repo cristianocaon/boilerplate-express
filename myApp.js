@@ -1,5 +1,6 @@
-var express = require('express');
-var app = express();
+let express = require('express');
+let bodyParser = require('body-parser');
+let app = express();
 require('dotenv').config({ path: __dirname + '/.env' });
 
 app.use(express.static(__dirname + '/public'));
@@ -36,9 +37,27 @@ app.get('/now', addCurrentTime, (req, res) => {
   });
 })
 
+app.get('/:word/echo', (req, res) => {
+  res.json({
+    "echo": req.params.word
+  });
+})
 
+app.get('/name', (req, res) => {
+  res.json({
+    "name": req.query.first + " " + req.query.last
+  });
+})
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
+app.post('/name', (req, res) => {
+  let reqName = req.body.first + " " + req.body.last;
+  res.json({
+    "name": reqName
+  });
+})
 
 
 
